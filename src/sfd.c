@@ -223,15 +223,14 @@ static const char* file_dialog(sfd_Options *opt, int save) {
 
     p = opt->filter;
     while (next_filter(b, &p)) {
-      n += sprintf(buf + n, "\"%s\" ", b);
+      //n += sprintf(buf + n, "\"%s\" ", b); // Prevents the file dialog from showing up. Don't nest file extensions in double quotes
+      n += sprintf(buf + n, " %s", b);
     }
 
     n += sprintf(buf + n, "\"");
   }
 
   n += sprintf(buf + n, " --file-filter=\"All Files | *\"");
-
-
   fp = popen(buf, "r");
   len = fread(result_buf, 1, sizeof(result_buf) - 1, fp);
   pclose(fp);
@@ -243,6 +242,7 @@ static const char* file_dialog(sfd_Options *opt, int save) {
     }
     return result_buf;
   }
+  
 
   return NULL;
 }
@@ -259,3 +259,4 @@ const char* sfd_save_dialog(sfd_Options *opt) {
 
 
 #endif
+
